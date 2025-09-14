@@ -24,6 +24,34 @@
 | `org.apache.maven.plugins:maven-compiler-plugin` | Configures Java compilation. Adds Micronaut’s annotation processors (`micronaut-http-validation`, `micronaut-serde-processor`) so Micronaut can generate DI code, HTTP routing, and serialization classes at compile time. |
 
 
+## Convert project to parent pom
+1. change packaging to pom for root
+   - root: pom
+   - service-app: jar
+   - service-db-access: jar
+2. Add <modules> section:
+   - service-app
+   - db-access
+3. moved src/, pom.xml, aot-jar.properties, micronaut-cli.yml into service-app folder
+4. Updated both module pom - added parent (root pom)
+   - declare Micronaut BOM once in the root → all child modules use consistent versions. 
+   - Child modules only reference the root POM. 
+   - If Micronaut version changes (e.g. 4.9.4), you only update it in root, not in every module.
+5. Moved following runtime, compile time and test dependencies to service-app pom.xml
+   - micronaut-http-server-netty
+   - micronaut-serde-jackson
+   - logback-classic
+   - micronaut-http-client (test scope)
+   - micronaut-test-junit5 (test scope)
+   - junit-jupiter-api (test scope)
+   - junit-jupiter-engine (test scope)
+6. Moved Micronaut plugin for mn:run, AOT, native builds to service-app pom.xml
+   - io.micronaut.maven:micronaut-maven-plugin
+7. Kept other 2 plugins in the root pom
+   - Root: enforcer + compiler (shared across all). 
+   - service-app: micronaut-maven-plugin (run/app build). 
+   - service-db-access: optional Micronaut plugin, usually just Flyway.
+    
 ## Micronaut 4.9.3 Documentation
 
 - [User Guide](https://docs.micronaut.io/4.9.3/guide/index.html)

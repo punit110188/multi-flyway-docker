@@ -69,6 +69,7 @@
   </dependencies>
   <build>
     <plugins>
+      <!-- Micronaut plugin for mn:run, AOT, native builds -->
       <plugin>
         <groupId>io.micronaut.maven</groupId>
         <artifactId>micronaut-maven-plugin</artifactId>
