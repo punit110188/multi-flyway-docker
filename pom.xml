@@ -16,8 +16,8 @@
 
 
   <modules>
-    <module>service-app</module>
     <module>service-db-access</module>
+    <module>service-app</module>
   </modules>
 
 

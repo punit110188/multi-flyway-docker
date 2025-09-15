@@ -155,7 +155,7 @@ The two ways to run Flyway migrations in Micronaut
 
 
 ### Dockerize study-db-access
-- baseimage : https://docker-integration.cernerrepos.net/ui/repos/tree/General/docker-integration/healtheintent/flyway-ol8/9-java17-20250826T115028Z
+- base image : https://docker-integration.cernerrepos.net/ui/repos/tree/General/docker-integration/healtheintent/flyway-ol8/9-java17-20250826T115028Z
 - build docker image: `./mvnw -pl service-db-access docker:build`
 - check entry point - it should be migrate.sh: `docker inspect docker-integration.cernerrepos.net/healtheintent/service-db-access:latest --format='{{.Config.Entrypoint}}'`
   - [/opt/java-base/migration/migrate.sh]
@@ -166,6 +166,17 @@ The two ways to run Flyway migrations in Micronaut
   -e DB_PASSWORD=Study1234 \
   -e DB_URL=jdbc:oracle:thin:@host.docker.internal:1521/XEPDB1 \
   docker-integration.cernerrepos.net/healtheintent/service-db-access:latest`
+
+### Dockerize study-app
+- base image: 
+  - docker.cernerrepos.net/healtheintent/graal-ol8:21.0.4-graal-20250826T120926Z
+  - https://docker-integration.cernerrepos.net/ui/repos/tree/General/docker-integration/healtheintent/graal-ol8/21.0.4-graal-20250826T120926Z
+- build docker image: `./mvnw -pl service-app jib:dockerBuild`
+- run docker image: `docker run --rm -p 8080:8080 \
+  -e DATASOURCES_DEFAULT_URL=jdbc:oracle:thin:@host.docker.internal:1521/XEPDB1 \
+  -e DATASOURCES_DEFAULT_USERNAME=study_user \
+  -e DATASOURCES_DEFAULT_PASSWORD=Study1234 \
+  docker-integration.cernerrepos.net/healtheintent/service-app:latest`
 
 ## Micronaut 4.9.3 Documentation
 

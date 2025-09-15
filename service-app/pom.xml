@@ -21,6 +21,8 @@
     <micronaut.aot.enabled>false</micronaut.aot.enabled>
     <micronaut.aot.packageName>com.flyway.docker.aot.generated</micronaut.aot.packageName>
     <exec.mainClass>com.flyway.docker.Application</exec.mainClass>
+    <build.time>latest</build.time>
+    <build.repository>docker-integration.cernerrepos.net</build.repository>
   </properties>
 
   <repositories>
@@ -40,6 +42,25 @@
       <groupId>io.micronaut.serde</groupId>
       <artifactId>micronaut-serde-jackson</artifactId>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.flyway.docker</groupId>
+      <artifactId>service-db-access</artifactId>
+      <version>0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>io.micronaut.data</groupId>
+      <artifactId>micronaut-data-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.micronaut.sql</groupId>
+      <artifactId>micronaut-jdbc-hikari</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.oracle.database.jdbc</groupId>
+      <artifactId>ojdbc11</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -66,6 +87,12 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.flyway.docker</groupId>
+      <artifactId>service-db-access</artifactId>
+      <version>0.1</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -75,6 +102,24 @@
         <artifactId>micronaut-maven-plugin</artifactId>
         <configuration>
           <configFile>aot-${packaging}.properties</configFile>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <configuration>
+          <from>
+            <image>docker.cernerrepos.net/healtheintent/graal-ol8:21.0.4-graal-20250826T120926Z</image>
+          </from>
+          <to>
+            <image>${build.repository}/healtheintent/service-app:${build.time}</image>
+          </to>
+          <container>
+            <mainClass>com.flyway.docker.Application</mainClass>
+            <ports>
+              <port>8080</port>
+            </ports>
+          </container>
         </configuration>
       </plugin>
     </plugins>
