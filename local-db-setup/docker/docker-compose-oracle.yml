@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  oracle-db:
+    image: gvenzl/oracle-xe:21-slim   # lightweight XE image
+    container_name: oracle-xe
+    ports:
+      - "1521:1521"   # Oracle listener port
+      - "5500:5500"   # EM Express (optional)
+    environment:
+      ORACLE_PASSWORD: adminPass123   # sys/system password
+      APP_USER: study_user            # app schema user
+      APP_USER_PASSWORD: Study1234 # app schema password
+    volumes:
+      - oracle-data:/opt/oracle/oradata  # persist db data
+
+volumes:
+  oracle-data:
