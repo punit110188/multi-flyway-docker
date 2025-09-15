@@ -154,6 +154,19 @@ The two ways to run Flyway migrations in Micronaut
     - This way, DB migrations are decoupled from your app runtime.
 
 
+### Dockerize study-db-access
+- baseimage : https://docker-integration.cernerrepos.net/ui/repos/tree/General/docker-integration/healtheintent/flyway-ol8/9-java17-20250826T115028Z
+- build docker image: `./mvnw -pl service-db-access docker:build`
+- check entry point - it should be migrate.sh: `docker inspect docker-integration.cernerrepos.net/healtheintent/service-db-access:latest --format='{{.Config.Entrypoint}}'`
+  - [/opt/java-base/migration/migrate.sh]
+- login to image : `docker run --rm -it --entrypoint sh docker-integration.cernerrepos.net/healtheintent/service-db-access:latest`
+  - migrate.sh copied to this location : `cat /opt/java-base/migration/migrate.sh`
+- run docker image: `docker run --rm \
+  -e DB_USERNAME=study_user \
+  -e DB_PASSWORD=Study1234 \
+  -e DB_URL=jdbc:oracle:thin:@host.docker.internal:1521/XEPDB1 \
+  docker-integration.cernerrepos.net/healtheintent/service-db-access:latest`
+
 ## Micronaut 4.9.3 Documentation
 
 - [User Guide](https://docs.micronaut.io/4.9.3/guide/index.html)

@@ -1,0 +1,25 @@
+<assembly>
+    <fileSets>
+        <!-- Copy the migrate.sh script -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources/docker</directory>
+            <filtered>true</filtered>
+            <fileMode>0755</fileMode>
+            <includes>
+                <include>migrate.sh</include>
+            </includes>
+            <outputDirectory>migration</outputDirectory>
+        </fileSet>
+
+        <!-- Copy Flyway SQL migrations -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources</directory>
+            <filtered>false</filtered>
+            <fileMode>0644</fileMode>
+            <includes>
+                <include>db/migration/oracle/*.sql</include>
+            </includes>
+            <outputDirectory>sql</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

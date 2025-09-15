@@ -13,6 +13,7 @@
     <version>4.9.3</version>
   </parent>
 
+
   <repositories>
     <repository>
       <id>central</id>
@@ -59,6 +60,27 @@
           </locations>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <configuration>
+          <images>
+            <image>
+              <name>${build.repository}/healtheintent/${project.artifactId}:${build.time}</name>
+              <build>
+                <dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile>
+                <assembly>
+                  <basedir>/opt/java-base</basedir>
+                  <descriptor>${project.basedir}/src/main/resources/docker/docker-assembly.xml</descriptor>
+                </assembly>
+                <buildOptions>
+                  <labels>${build.labels}</labels>
+                </buildOptions>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -67,6 +89,9 @@
     <datasource.url>jdbc:oracle:thin:@localhost:1521/XEPDB1</datasource.url>
     <datasource.user>study_user</datasource.user>
     <datasource.password>Study1234</datasource.password>
+    <build.labels>{"dummy":"label"}</build.labels>
+    <build.time>latest</build.time>
+    <build.repository>docker-integration.cernerrepos.net</build.repository>
   </properties>
 
 </project>

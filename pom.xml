@@ -12,6 +12,9 @@
     <artifactId>micronaut-parent</artifactId>
     <version>4.9.3</version>
   </parent>
+
+
+
   <modules>
     <module>service-app</module>
     <module>service-db-access</module>
